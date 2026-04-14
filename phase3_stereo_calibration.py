@@ -3,12 +3,10 @@ import numpy as np
 import glob
 import os
 
-# === SETTINGS — must match phase2a_capture.py ===
+
 CHESSBOARD  = (9, 7)
 square_size = 0.019  # 19mm in meters
 
-# === LOAD PHASE 1 RESULTS ===
-print("Loading Phase 1 calibration results...")
 
 K0    = np.load("calibration_results/cam0/K.npy")
 dist0 = np.load("calibration_results/cam0/dist.npy")
@@ -18,7 +16,7 @@ dist1 = np.load("calibration_results/cam1/dist.npy")
 print(f"K0:\n{K0}\n")
 print(f"K1:\n{K1}\n")
 
-# === LOAD CAPTURED CORNERS ===
+
 print("Loading captured stereo image pairs...")
 
 corners0_files = sorted(glob.glob("stereo_images/cam0/corners_*.npy"))
@@ -51,7 +49,7 @@ sample_img = cv2.imread("stereo_images/cam0/capture_00.jpg")
 image_size  = (sample_img.shape[1], sample_img.shape[0])
 print(f"Image size: {image_size}")
 
-# === OUTLIER REMOVAL — remove pairs with large Y difference ===
+#OUTLIER REMOVAL — remove pairs with large Y difference
 print("\nRemoving outlier pairs...")
 
 cleaned_obj  = []
@@ -82,7 +80,7 @@ objpoints  = cleaned_obj
 imgpoints0 = cleaned_img0
 imgpoints1 = cleaned_img1
 
-# === STEREO CALIBRATION ===
+# STEREO CALIBRATION
 print("\nRunning stereo calibration...")
 
 flags = cv2.CALIB_FIX_INTRINSIC
@@ -102,8 +100,7 @@ print(f"\nR (rotation between cameras):\n{R}")
 print(f"\nT (translation between cameras):\n{T}")
 print(f"\nBaseline distance: {abs(T[0][0])*100:.2f} cm")
 
-# === STEREO RECTIFICATION ===
-print("\nComputing rectification maps...")
+print("Computing rectification maps...")
 
 R0, R1, P0, P1, Q, roi0, roi1 = cv2.stereoRectify(
     K0, dist0,
@@ -118,7 +115,6 @@ map0x, map0y = cv2.initUndistortRectifyMap(
 map1x, map1y = cv2.initUndistortRectifyMap(
     K1, dist1, R1, P1, image_size, cv2.CV_32FC1)
 
-# === SAVE EVERYTHING ===
 print("\nSaving results...")
 
 os.makedirs("calibration_results/stereo", exist_ok=True)
@@ -138,17 +134,6 @@ np.save("calibration_results/stereo/map1x.npy", map1x)
 np.save("calibration_results/stereo/map1y.npy", map1y)
 
 print("\nAll stereo calibration results saved.")
-print(f"""
-calibration_results/stereo/
-├── R.npy        ← rotation between cameras
-├── T.npy        ← translation between cameras
-├── E.npy        ← essential matrix
-├── F.npy        ← fundamental matrix
-├── R0, R1       ← rectification rotations
-├── P0, P1       ← projection matrices
-├── Q.npy        ← disparity-to-depth matrix
-└── map0x/y, map1x/y  ← pixel remap tables
-
-Reprojection error: {error:.4f} px
+print(f"""Reprojection error: {error:.4f} px
 Baseline: {abs(T[0][0])*100:.2f} cm
 """)
