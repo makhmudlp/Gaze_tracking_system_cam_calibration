@@ -24,7 +24,7 @@ corners1_files = sorted(glob.glob("stereo_images/cam1/corners_*.npy"))
 
 if len(corners0_files) == 0:
     print("ERROR: No corner files found in stereo_images/")
-    print("Run phase2a_capture.py first.")
+    print("Run phase 2 first.")
     exit()
 
 print(f"Found {len(corners0_files)} pairs.")
