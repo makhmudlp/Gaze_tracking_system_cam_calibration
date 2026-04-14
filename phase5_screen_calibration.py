@@ -5,7 +5,6 @@ import cv2
 import numpy as np
 import mediapipe as mp
 
-# === LOAD CALIBRATION ===
 P0    = np.load("calibration_results/stereo/P0.npy")
 P1    = np.load("calibration_results/stereo/P1.npy")
 map0x = np.load("calibration_results/stereo/map0x.npy")
@@ -15,11 +14,9 @@ map1y = np.load("calibration_results/stereo/map1y.npy")
 
 print("Calibration loaded.")
 
-# === SCREEN SETTINGS ===
 SCREEN_W = 2560
 SCREEN_H = 1664
 
-# === MEDIAPIPE ===
 mp_face_mesh = mp.solutions.face_mesh
 
 face_mesh_0 = mp_face_mesh.FaceMesh(
@@ -33,7 +30,7 @@ LEFT_IRIS      = 468
 LEFT_EYE_INNER = 133
 LEFT_EYE_OUTER = 33
 
-# === FUNCTIONS ===
+# Functions
 
 def get_iris_and_gaze(frame, face_mesh_instance):
     rgb     = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -90,7 +87,7 @@ def get_gaze_features(rect0, rect1):
 
     return features, eye_3d
 
-# === 9-POINT CALIBRATION GRID ===
+# 9-POINT CALIBRATION GRID
 MARGIN_X = int(SCREEN_W * 0.1)
 MARGIN_Y = int(SCREEN_H * 0.1)
 
@@ -103,7 +100,7 @@ for row in range(3):
 
 print(f"9 calibration points ready.")
 
-# === OPEN CAMERAS ===
+
 cap0 = cv2.VideoCapture(0)
 cap1 = cv2.VideoCapture(1)
 
@@ -122,7 +119,7 @@ cv2.setWindowProperty("Calibration",
 collected_features = []
 collected_points   = []
 
-# === CALIBRATION LOOP ===
+#CALIBRATION LOOP
 for point_idx, (target_x, target_y) in enumerate(CALIB_POINTS):
 
     screen = np.zeros((SCREEN_H, SCREEN_W, 3), dtype=np.uint8)
@@ -211,7 +208,7 @@ cv2.destroyAllWindows()
 
 print(f"\nTotal points collected: {len(collected_features)}")
 
-# === FIT HOMOGRAPHY ===
+#FIT HOMOGRAPHY
 if len(collected_features) >= 4:
 
     # Flip both X and Y to match screen coordinate directions
