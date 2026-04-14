@@ -52,8 +52,8 @@ Phase 6  →  Real-time gaze demo
 Camera 0 reprojection error:  0.1951 px
 Camera 1 reprojection error:  0.1858 px
 Stereo reprojection error:    0.4422 px
-Camera baseline (measured):   ~10 cm
-Camera baseline (computed T): 18.9 cm
+Camera baseline (measured):   ~12 cm
+Camera baseline (computed T): 13.08 cm
 ```
 
 ---
