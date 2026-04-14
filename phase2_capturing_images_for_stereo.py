@@ -18,7 +18,6 @@ cap1 = cv2.VideoCapture(1)
 
 img_count = 0
 
-print("=== STEREO IMAGE CAPTURE ===")
 print("Press SPACE to capture — only when BOTH DETECTED is green.")
 print("Press Q to quit.")
 print("Aim for 25-30 pairs with varied angles and positions.")
@@ -87,4 +86,4 @@ cap1.release()
 cv2.destroyAllWindows()
 
 print(f"\nDone. Total pairs captured: {img_count}")
-print("Now run phase2b_calibrate.py to compute stereo calibration.")
+print("Now run phase3_stereo_calibration.py to compute stereo calibration.")
