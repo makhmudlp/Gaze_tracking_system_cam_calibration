@@ -5,7 +5,6 @@ import cv2
 import numpy as np
 import mediapipe as mp
 
-# === LOAD CALIBRATION ===
 K0    = np.load("calibration_results/cam0/K.npy")
 dist0 = np.load("calibration_results/cam0/dist.npy")
 K1    = np.load("calibration_results/cam1/K.npy")
@@ -19,7 +18,7 @@ map1y = np.load("calibration_results/stereo/map1y.npy")
 
 print("Calibration loaded.")
 
-# === MEDIAPIPE — one instance per camera ===
+# MEDIAPIPE — one instance per camera
 mp_face_mesh = mp.solutions.face_mesh
 
 face_mesh_0 = mp_face_mesh.FaceMesh(
@@ -38,7 +37,7 @@ face_mesh_1 = mp_face_mesh.FaceMesh(
 LEFT_IRIS  = 468
 RIGHT_IRIS = 473
 
-# === FUNCTIONS ===
+#FUNCTIONS
 
 def get_iris_centers(frame, face_mesh_instance):
     rgb     = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -68,7 +67,7 @@ def triangulate_iris(pt0, pt1):
     point_3d = point_4d[:3] / point_4d[3]
     return point_3d.flatten()
 
-# === MAIN LOOP ===
+# Main loop
 
 cap0 = cv2.VideoCapture(0)
 cap1 = cv2.VideoCapture(1)
