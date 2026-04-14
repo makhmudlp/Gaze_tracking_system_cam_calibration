@@ -71,7 +71,6 @@ print(f"\nCamera Matrix K:\n{K}")
 print(f"\nDistortion Coefficients:\n{dist}")
 print(f"\nReprojection Error: {ret:.4f} px")
 
-# === STAGE 4: SAVE ===
 
 os.makedirs(f"calibration_results/{cam_id}", exist_ok=True)
 
