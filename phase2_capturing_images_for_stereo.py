@@ -2,18 +2,17 @@ import cv2
 import numpy as np
 import os
 
-# === SETTINGS ===
+# Settings of CHESSBOARD
 CHESSBOARD = (9, 7)
 square_size = 0.019  # 19mm in meters
 
-# === PREPARE ===
+#prepare real world coordinates
 objp = np.zeros((CHESSBOARD[0] * CHESSBOARD[1], 3), dtype=np.float32)
 objp[:, :2] = np.mgrid[0:CHESSBOARD[0], 0:CHESSBOARD[1]].T.reshape(-1, 2) * square_size
 
 os.makedirs("stereo_images/cam0", exist_ok=True)
 os.makedirs("stereo_images/cam1", exist_ok=True)
 
-# === OPEN CAMERAS ===
 cap0 = cv2.VideoCapture(0)
 cap1 = cv2.VideoCapture(1)
 
